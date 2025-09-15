@@ -24,6 +24,7 @@ services:
       - "8546:8546"
       - "30303:30303"
       - "30303:30303/udp"
+      - "7301:6060"
     volumes:
       - shared:/shared
       - ${EXECUTION_DATA_DIR:-./execution_data}:/app/data
