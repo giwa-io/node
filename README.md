@@ -108,6 +108,6 @@ By running this node, you are responsible for your infrastructure, security, and
 
 ## 🌐 Join the Giwa Community
 
-- 📖 Documentation: *Coming Soon*
+- [📖 Documentation](https://docs.giwa.io)
 - 💬 Discord: *Coming Soon*
 - 🐦 Twitter: *Coming Soon*
