@@ -16,7 +16,7 @@ services:
       context: .
       dockerfile: ./geth/Dockerfile
       args:
-        OPGETH_VERSION: v1.101511.1
+        OPGETH_VERSION: v1.101603.1
     env_file:
       - ${NETWORK_ENV:-.env.sepolia}
     ports:
@@ -38,7 +38,7 @@ services:
       context: .
       dockerfile: ./node/Dockerfile
       args:
-        OPNODE_VERSION: v1.13.4
+        OPNODE_VERSION: v1.14.1
     env_file:
       - ${NETWORK_ENV:-.env.sepolia}
     ports:
