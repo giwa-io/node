@@ -109,5 +109,5 @@ By running this node, you are responsible for your infrastructure, security, and
 ## 🌐 Join the Giwa Community
 
 - [📖 Documentation](https://docs.giwa.io)
-- [🐦 X](https://x.com/giwachain)
+- [🆇 X](https://x.com/giwachain)
 - 💬 Discord: *Coming Soon*
