@@ -13,7 +13,7 @@ WORKDIR /optimism
 
 ARG OPNODE_VERSION
 
-RUN git checkout op-node/$OPNODE_VERSION
+RUN git fetch --tags && git checkout op-node/$OPNODE_VERSION
 
 COPY --from=just-builder /app/just /usr/local/bin/
 
