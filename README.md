@@ -3,6 +3,12 @@
 
 # Giwa Node
 
+<h4 align="center">
+    <p>
+        <b>English</b> |
+        <a href="i18n/tr/README_tr.md">Türkçe</a> |
+    </p>
+</h4>
 
 **Giwa** is a Ethereum Layer 2 network built on Optimism's [OP Stack](https://stack.optimism.io/).  
 This repository provides everything you need to run your own node on the Giwa network.
