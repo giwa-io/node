@@ -10,6 +10,12 @@ METRICS_PORT="${GETH_METRICS_PORT:-6060}"
 ROLLUP_SEQUENCER_HTTP="${GETH_ROLLUP_SEQUENCERHTTP}"
 DISCOVERY_PORT="${GETH_DISCOVERY_PORT:-30303}"
 P2P_PORT="${GETH_PORT:-30303}"
+PRUNING_MODE="${GETH_GCMODE:-}"
+
+PRUNING_MODE_FLAG=""
+if [[ "$PRUNING_MODE" == "full" ]]; then
+  PRUNING_MODE_FLAG="--full"
+fi
 
 exec op-reth node \
   --datadir="$DATA_DIR" \
@@ -32,4 +38,5 @@ exec op-reth node \
   --rollup.sequencer-http="$ROLLUP_SEQUENCER_HTTP" \
   --rollup.disable-tx-pool-gossip \
   --discovery.port="$DISCOVERY_PORT" \
-  --port="$P2P_PORT"
+  --port="$P2P_PORT" \
+  $PRUNING_MODE_FLAG
