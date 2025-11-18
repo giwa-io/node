@@ -14,9 +14,10 @@ services:
         condition: service_completed_successfully
     build:
       context: .
-      dockerfile: ./geth/Dockerfile
+      dockerfile: ${EXECUTION_CLIENT:-geth}/Dockerfile
       args:
         OPGETH_VERSION: v1.101603.1
+        RETH_VERSION: v1.9.2
     env_file:
       - ${NETWORK_ENV:-.env.sepolia}
     ports:
@@ -42,6 +43,8 @@ services:
         OPNODE_VERSION: v1.14.1
     env_file:
       - ${NETWORK_ENV:-.env.sepolia}
+    environment:
+      OP_NODE_L2_ENGINE_KIND: ${EXECUTION_CLIENT:-geth}
     ports:
       - "9545:9545"
       - "9222:9222"

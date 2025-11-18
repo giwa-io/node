@@ -73,6 +73,12 @@ Choose one of the following sync strategies depending on your preference.
 - **Use when:** You prefer replay‑based syncing and tighter control (e.g. L2 verifier).
 - **Trade‑offs:** Slower than snap; operationally simpler for controlled environments.
 
+### Execution Client Options
+> Choose your preferred execution client by setting the `EXECUTION_CLIENT` environment variable.
+
+| Variable           | Description                                | Default |
+|--------------------|--------------------------------------------|---------|
+| `EXECUTION_CLIENT` | Execution client to use (`geth` or `reth`) | `geth`  |
 
 ## 💽 Persisting Data
 
