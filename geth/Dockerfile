@@ -12,6 +12,8 @@ RUN make geth
 # -------------------------------------------------------------------------
 FROM ubuntu:jammy
 
+RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 COPY --from=builder /op-geth/build/bin/geth /usr/local/bin/
