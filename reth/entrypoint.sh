@@ -1,23 +1,32 @@
 #!/bin/bash
 set -euxo pipefail
 
-GENESIS_FILE="${GENESIS_FILE:-/app/sepolia-genesis.json}"
-DATA_DIR="${GETH_DATADIR:-/app/data}"
-RPC_PORT="${GETH_HTTP_PORT:-8545}"
-WS_PORT="${GETH_WS_PORT:-8546}"
-AUTHRPC_PORT="${GETH_AUTHRPC_PORT:-8551}"
-METRICS_PORT="${GETH_METRICS_PORT:-6060}"
+GENESIS_FILE="${GENESIS_FILE}"
+DATA_DIR="${GETH_DATADIR}"
+RPC_PORT="${GETH_HTTP_PORT}"
+WS_PORT="${GETH_WS_PORT}"
+AUTHRPC_PORT="${GETH_AUTHRPC_PORT}"
+METRICS_PORT="${GETH_METRICS_PORT}"
+P2P_PORT="${GETH_PORT}"
+DISCOVERY_PORT="${GETH_DISCOVERY_PORT}"
 ROLLUP_SEQUENCER_HTTP="${GETH_ROLLUP_SEQUENCERHTTP}"
-DISCOVERY_PORT="${GETH_DISCOVERY_PORT:-30303}"
-P2P_PORT="${GETH_PORT:-30303}"
-PRUNING_MODE="${GETH_GCMODE:-}"
+PRUNING_MODE="${GETH_GCMODE}"
+JWT_SECRET="${GETH_AUTHRPC_JWTSECRET}"
+BOOTNODES="${GETH_BOOTNODES}"
 
-PRUNING_MODE_FLAG=""
+ADDITIONAL_ARGS=""
 if [[ "$PRUNING_MODE" == "full" ]]; then
-  PRUNING_MODE_FLAG="--full"
+  ADDITIONAL_ARGS="--full"
 fi
 
-exec op-reth node \
+if [[ -n "${FLASHBLOCKS_WEBSOCKET_URL:-}" ]]; then
+    ADDITIONAL_ARGS="$ADDITIONAL_ARGS --websocket-url=$FLASHBLOCKS_WEBSOCKET_URL"
+    echo "Running in flashblocks support mode"
+else
+    echo "Running in vanilla mode"
+fi
+
+exec base-reth-node node \
   --datadir="$DATA_DIR" \
   --ws \
   --ws.origins="*" \
@@ -31,7 +40,7 @@ exec op-reth node \
   --http.api=web3,debug,eth,net,txpool,miner \
   --authrpc.addr=0.0.0.0 \
   --authrpc.port="$AUTHRPC_PORT" \
-  --authrpc.jwtsecret="$OP_NODE_L2_ENGINE_AUTH" \
+  --authrpc.jwtsecret="$JWT_SECRET" \
   --metrics=0.0.0.0:"$METRICS_PORT" \
   --max-outbound-peers=100 \
   --chain "$GENESIS_FILE" \
@@ -39,4 +48,5 @@ exec op-reth node \
   --rollup.disable-tx-pool-gossip \
   --discovery.port="$DISCOVERY_PORT" \
   --port="$P2P_PORT" \
-  $PRUNING_MODE_FLAG
+  --bootnodes="$BOOTNODES" \
+  $ADDITIONAL_ARGS
