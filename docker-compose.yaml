@@ -14,10 +14,10 @@ services:
         condition: service_completed_successfully
     build:
       context: .
-      dockerfile: ${EXECUTION_CLIENT:-geth}/Dockerfile
+      dockerfile: ${CLIENT}/Dockerfile
       args:
         OPGETH_VERSION: v1.101603.1
-        RETH_VERSION: v1.9.2
+        BASE_NODE_RETH_VERSION: v0.1.16
     env_file:
       - ${NETWORK_ENV:-.env.sepolia}
     ports:
@@ -28,7 +28,7 @@ services:
       - "30303:30303/udp"
     volumes:
       - shared:/shared
-      - ${EXECUTION_DATA_DIR:-./execution_data}:/app/data
+      - ${DATA_DIR}:/app/data
   consensus:
     container_name: giwa-cl
     depends_on:
@@ -44,7 +44,7 @@ services:
     env_file:
       - ${NETWORK_ENV:-.env.sepolia}
     environment:
-      OP_NODE_L2_ENGINE_KIND: ${EXECUTION_CLIENT:-geth}
+      OP_NODE_L2_ENGINE_KIND: ${CLIENT}
     ports:
       - "9545:9545"
       - "9222:9222"
