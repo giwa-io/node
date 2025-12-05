@@ -1,11 +1,11 @@
-![Giwa](resources/logo.png)
+![GIWA](resources/logo.png)
 
 
-# Giwa Node
+# GIWA Node
 
 
-**Giwa** is a Ethereum Layer 2 network built on Optimism's [OP Stack](https://stack.optimism.io/).  
-This repository provides everything you need to run your own node on the Giwa network.
+**GIWA** is a Ethereum Layer 2 network built on Optimism's [OP Stack](https://stack.optimism.io/).  
+This repository provides everything you need to run your own node on the GIWA network.
 
 ## 💡 Supported Networks
 
@@ -28,8 +28,8 @@ This repository provides everything you need to run your own node on the Giwa ne
    ```
 4. Build and run
    ```bash
-   docker compose build --parallel
-   NETWORK_ENV=<.env.{network}> docker compose up -d
+   CLIENT=<geth|reth> docker compose build --parallel
+   CLIENT=<geth|reth> NETWORK_ENV=<.env.{network}> docker compose up -d
    ```
 
 5. Stop
@@ -39,7 +39,7 @@ This repository provides everything you need to run your own node on the Giwa ne
 
 6. Cleanup
     ```bash
-    docker compose down -v && rm -rf ./execution_data
+    docker compose down -v && rm -rf ./${DATA_DIR}
     ```
 
 
@@ -52,11 +52,17 @@ This repository provides everything you need to run your own node on the Giwa ne
 | `OP_NODE_L1_ETH_RPC` | Your Ethereum L1 node RPC endpoint |
 | `OP_NODE_L1_BEACON`  | Your L1 beacon node endpoint       |
 
+### Execution Client
+> Choose your preferred execution client by setting the `CLIENT` environment variable.
+
+| Variable | Description                                | Default |
+|----------|--------------------------------------------|---------|
+| `CLIENT` | Execution client (`geth` or `reth`)        | `geth`  |
 
 ### Sync Configuration
 
 Choose one of the following sync strategies depending on your preference.
-> Enable the corresponding **OPTION** block in your `.env` (only one at a time).
+> Enable the corresponding **OPTION** block in your `.env.{network}` (only one at a time).
 
 #### 1) Snap Sync — Fast & Practical
 - **What it does:** Downloads a recent state snapshot and syncs to the current head without executing every historical block.
@@ -73,17 +79,24 @@ Choose one of the following sync strategies depending on your preference.
 - **Use when:** You prefer replay‑based syncing and tighter control (e.g. L2 verifier).
 - **Trade‑offs:** Slower than snap; operationally simpler for controlled environments.
 
-### Execution Client Options
-> Choose your preferred execution client by setting the `EXECUTION_CLIENT` environment variable.
+### Flashblocks (Optional)
+Flashblocks support is available when running **reth**.  
+To enable it:
 
-| Variable           | Description                                | Default |
-|--------------------|--------------------------------------------|---------|
-| `EXECUTION_CLIENT` | Execution client to use (`geth` or `reth`) | `geth`  |
+1. Edit your `.env.{network}` and uncomment:
+   ```bash
+   FLASHBLOCKS_WEBSOCKET_URL=
+   ```
+
+2. Run your node with reth:
+   ```bash
+   CLIENT=reth NETWORK_ENV=<.env.{network}> docker compose up -d
+   ```
 
 ## 💽 Persisting Data
 
-By default, execution data is mounted to `{PROJECT_ROOT}/execution_data`.  
-To customize the mount path, set the `$EXECUTION_DATA_DIR` environment variable.
+By default, execution data is mounted to `{PROJECT_ROOT}/${CLIENT}_data`.  
+To customize the mount path, set the `$DATA_DIR` environment variable.
 
 
 ## ⚙️ Hardware Requirements
@@ -112,7 +125,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
 By running this node, you are responsible for your infrastructure, security, and compliance.
 
 
-## 🌐 Join the Giwa Community
+## 🌐 Join the GIWA Community
 
 - [📖 Documentation](https://docs.giwa.io)
 - [🆇 X](https://x.com/giwachain)
