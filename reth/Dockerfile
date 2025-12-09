@@ -1,20 +1,22 @@
 FROM rust:1.88-bookworm AS builder
 
-RUN git clone https://github.com/paradigmxyz/reth.git /reth
+RUN apt update && apt install -y libclang-dev pkg-config build-essential
 
-WORKDIR /reth
+RUN git clone https://github.com/base/node-reth.git /node-reth
 
-ARG RETH_VERSION="INVALID"
+WORKDIR /node-reth
 
-RUN git checkout $RETH_VERSION
+ARG BASE_NODE_RETH_VERSION="INVALID"
 
-RUN make maxperf-op
+RUN git checkout $BASE_NODE_RETH_VERSION
+
+RUN cargo build --profile maxperf --features jemalloc --bin base-reth-node
 # -------------------------------------------------------------------------
 FROM ubuntu:noble
 
 WORKDIR /app
 
-COPY --from=builder /reth/target/maxperf/op-reth /usr/local/bin/
+COPY --from=builder /node-reth/target/maxperf/base-reth-node /usr/local/bin/
 COPY genesis/execution/ /app/
 COPY --chmod=755 reth/entrypoint.sh /app/
 
