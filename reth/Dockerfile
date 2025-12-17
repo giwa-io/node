@@ -6,9 +6,9 @@ RUN git clone https://github.com/paradigmxyz/reth.git /reth
 
 WORKDIR /reth
 
-ARG BASE_NODE_RETH_VERSION="INVALID"
+ARG RETH_VERSION="INVALID"
 
-RUN git checkout $BASE_NODE_RETH_VERSION
+RUN git checkout $RETH_VERSION
 
 RUN make maxperf-op
 # -------------------------------------------------------------------------
