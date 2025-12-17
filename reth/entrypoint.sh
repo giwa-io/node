@@ -20,13 +20,13 @@ if [[ "$PRUNING_MODE" == "full" ]]; then
 fi
 
 if [[ -n "${FLASHBLOCKS_WEBSOCKET_URL:-}" ]]; then
-    ADDITIONAL_ARGS="$ADDITIONAL_ARGS --websocket-url=$FLASHBLOCKS_WEBSOCKET_URL"
+    ADDITIONAL_ARGS="$ADDITIONAL_ARGS --flashblocks-url=$FLASHBLOCKS_WEBSOCKET_URL"
     echo "Running in flashblocks support mode"
 else
     echo "Running in vanilla mode"
 fi
 
-exec base-reth-node node \
+exec op-reth node \
   --datadir="$DATA_DIR" \
   --ws \
   --ws.origins="*" \
@@ -43,7 +43,7 @@ exec base-reth-node node \
   --authrpc.jwtsecret="$JWT_SECRET" \
   --metrics=0.0.0.0:"$METRICS_PORT" \
   --max-outbound-peers=100 \
-  --chain "$GENESIS_FILE" \
+  --chain="$GENESIS_FILE" \
   --rollup.sequencer-http="$ROLLUP_SEQUENCER_HTTP" \
   --rollup.disable-tx-pool-gossip \
   --discovery.port="$DISCOVERY_PORT" \
