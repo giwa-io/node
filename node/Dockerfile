@@ -5,7 +5,7 @@ WORKDIR /app
 RUN cargo install just
 RUN cp $(which just) .
 # --------------------------------------------------------
-FROM golang:1.23.8-bullseye AS builder
+FROM golang:1.24.10-bullseye AS builder
 
 RUN git clone https://github.com/ethereum-optimism/optimism.git /optimism
 
