@@ -1,4 +1,4 @@
-FROM golang:1.23.0-bullseye AS builder
+FROM golang:1.23.0-bookworm AS builder
 
 RUN git clone https://github.com/ethereum-optimism/op-geth.git /op-geth
 
@@ -10,7 +10,7 @@ RUN git checkout $OPGETH_VERSION
 
 RUN make geth
 # -------------------------------------------------------------------------
-FROM ubuntu:jammy
+FROM ubuntu:noble
 
 WORKDIR /app
 

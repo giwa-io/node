@@ -1,11 +1,11 @@
-FROM rust:1.82.0-bullseye AS just-builder
+FROM rust:1.92-bookworm AS just-builder
 
 WORKDIR /app
 
 RUN cargo install just
 RUN cp $(which just) .
 # --------------------------------------------------------
-FROM golang:1.24.10-bullseye AS builder
+FROM golang:1.24.10-bookworm AS builder
 
 RUN git clone https://github.com/ethereum-optimism/optimism.git /optimism
 
@@ -19,7 +19,7 @@ COPY --from=just-builder /app/just /usr/local/bin/
 
 RUN make op-node
 # -------------------------------------------------------------------------
-FROM ubuntu:jammy
+FROM ubuntu:noble
 
 WORKDIR /app
 
