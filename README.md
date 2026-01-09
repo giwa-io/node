@@ -4,7 +4,7 @@
 # GIWA Node
 
 
-**GIWA** is a Ethereum Layer 2 network built on Optimism's [OP Stack](https://stack.optimism.io/).  
+**GIWA** is an Ethereum Layer 2 network built on Optimism's [OP Stack](https://stack.optimism.io/).  
 This repository provides everything you need to run your own node on the GIWA network.
 
 ## 💡 Supported Networks
