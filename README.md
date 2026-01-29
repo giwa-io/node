@@ -110,6 +110,12 @@ To customize the mount path, set the `$DATA_DIR` environment variable.
 | Disk     | 500 GB (NVMe) | 1+ TB       |
 
 
+## 🚀 Snapshot
+
+For the fastest sync experience, you can restore from a snapshot instead of syncing from genesis.  
+👉 **[Snapshot Guide](https://docs.giwa.io/node-operators/snapshots)** — Follow the step-by-step instructions to download and restore a snapshot.
+
+
 ## 🙋 Troubleshooting
 
 - To check logs:
