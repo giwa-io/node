@@ -1,4 +1,4 @@
-FROM golang:1.23.0-bookworm AS builder
+FROM golang:1.24.0-bookworm AS builder
 
 RUN git clone https://github.com/ethereum-optimism/op-geth.git /op-geth
 
