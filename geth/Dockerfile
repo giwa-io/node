@@ -6,7 +6,7 @@ WORKDIR /op-geth
 
 ARG OPGETH_VERSION
 
-RUN git checkout $OPGETH_VERSION
+RUN git fetch --tags && git checkout "tags/${OPGETH_VERSION}"
 
 RUN make geth
 # -------------------------------------------------------------------------
