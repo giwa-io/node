@@ -19,6 +19,10 @@ RUN make op-node
 # -------------------------------------------------------------------------
 FROM ubuntu:noble
 
+RUN apt-get update && \
+    apt-get install -y ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 COPY --from=builder /optimism/op-node/bin/op-node /usr/local/bin/
