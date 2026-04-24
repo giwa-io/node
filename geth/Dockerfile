@@ -1,12 +1,10 @@
 FROM golang:1.24.0-bookworm AS builder
 
-RUN git clone https://github.com/ethereum-optimism/op-geth.git /op-geth
-
-WORKDIR /op-geth
-
 ARG OPGETH_VERSION
 
-RUN git checkout $OPGETH_VERSION
+RUN git clone https://github.com/ethereum-optimism/op-geth.git --branch $OPGETH_VERSION --single-branch /op-geth
+
+WORKDIR /op-geth
 
 RUN make geth
 # -------------------------------------------------------------------------

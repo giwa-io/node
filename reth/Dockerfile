@@ -2,14 +2,11 @@ FROM rust:1.88-bookworm AS builder
 
 RUN apt update && apt install -y libclang-dev pkg-config build-essential
 
-RUN git clone https://github.com/ethereum-optimism/optimism.git
-
-WORKDIR /optimism
-
 ARG RETH_VERSION="INVALID"
 
-RUN git checkout op-reth/$RETH_VERSION && \
-    git gc
+RUN git clone https://github.com/ethereum-optimism/optimism.git --branch op-reth/$RETH_VERSION --single-branch /optimism
+
+WORKDIR /optimism
 
 RUN cd rust/op-reth && make maxperf
 # -------------------------------------------------------------------------
