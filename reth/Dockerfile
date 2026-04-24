@@ -8,7 +8,7 @@ WORKDIR /optimism
 
 ARG RETH_VERSION="INVALID"
 
-RUN git checkout $RETH_VERSION && \
+RUN git checkout op-reth/$RETH_VERSION && \
     git gc
 
 RUN cd rust/op-reth && make maxperf
