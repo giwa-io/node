@@ -28,8 +28,8 @@ This repository provides everything you need to run your own node on the GIWA ne
    ```
 4. Build and run
    ```bash
-   CLIENT=<geth|reth> docker compose build --parallel
-   CLIENT=<geth|reth> NETWORK_ENV=<.env.{network}> docker compose up -d
+   CLIENT=<reth|geth> docker compose build --parallel
+   CLIENT=<reth|geth> NETWORK_ENV=<.env.{network}> docker compose up -d
    ```
 
 5. Stop
@@ -57,7 +57,7 @@ This repository provides everything you need to run your own node on the GIWA ne
 
 | Variable | Description                                | Default |
 |----------|--------------------------------------------|---------|
-| `CLIENT` | Execution client (`geth` or `reth`)        | `geth`  |
+| `CLIENT` | Execution client (`reth` or `geth`)        | `reth`  |
 
 ### Sync Configuration
 
