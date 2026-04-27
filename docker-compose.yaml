@@ -16,8 +16,8 @@ services:
       context: .
       dockerfile: ${CLIENT}/Dockerfile
       args:
-        OPGETH_VERSION: v1.101609.1
         RETH_VERSION: v1.11.0
+        OPGETH_VERSION: v1.101609.1
     env_file:
       - ${NETWORK_ENV:-.env.sepolia}
     ports:

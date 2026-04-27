@@ -7,19 +7,21 @@ RUN cp $(which just) .
 # --------------------------------------------------------
 FROM golang:1.24.10-bookworm AS builder
 
-RUN git clone https://github.com/ethereum-optimism/optimism.git /optimism
-
-WORKDIR /optimism
-
 ARG OPNODE_VERSION
 
-RUN git checkout op-node/$OPNODE_VERSION
+RUN git clone https://github.com/ethereum-optimism/optimism.git --branch op-node/$OPNODE_VERSION --single-branch /optimism
+
+WORKDIR /optimism
 
 COPY --from=just-builder /app/just /usr/local/bin/
 
 RUN make op-node
 # -------------------------------------------------------------------------
 FROM ubuntu:noble
+
+RUN apt-get update && \
+    apt-get install -y ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
