@@ -1,6 +1,7 @@
-FROM rust:1.88-bookworm AS builder
+FROM rust:1.94-bookworm AS builder
 
 RUN apt update && apt install -y libclang-dev pkg-config build-essential
+RUN cargo install just --root /usr/local
 
 ARG RETH_VERSION="INVALID"
 
@@ -8,7 +9,7 @@ RUN git clone https://github.com/ethereum-optimism/optimism.git --branch op-reth
 
 WORKDIR /optimism
 
-RUN cd rust/op-reth && make maxperf
+RUN cd rust/op-reth && just update-superchain-registry-submodule && just maxperf
 # -------------------------------------------------------------------------
 FROM ubuntu:noble
 
