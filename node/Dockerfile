@@ -1,13 +1,17 @@
-FROM rust:1.92-bookworm AS just-builder
+FROM rust:1.94-bookworm AS just-builder
 
 WORKDIR /app
 
 RUN cargo install just
 RUN cp $(which just) .
 # --------------------------------------------------------
-FROM golang:1.24.10-bookworm AS builder
+FROM golang:1.26.4-bookworm AS builder
 
 ARG OPNODE_VERSION
+
+RUN apt-get update && apt-get install -y jq zip
+RUN go install github.com/mikefarah/yq/v4@latest && \
+    cp "$(go env GOPATH)/bin/yq" /usr/local/bin/yq
 
 RUN git clone https://github.com/ethereum-optimism/optimism.git --branch op-node/$OPNODE_VERSION --single-branch /optimism
 
@@ -15,7 +19,7 @@ WORKDIR /optimism
 
 COPY --from=just-builder /app/just /usr/local/bin/
 
-RUN make op-node
+RUN just build-superchain-go && just op-node
 # -------------------------------------------------------------------------
 FROM ubuntu:noble
 
