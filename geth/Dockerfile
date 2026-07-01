@@ -1,3 +1,6 @@
+# DEPRECATED: op-geth will be removed after the Karst hardfork and cannot follow
+#             GIWA Sepolia once Karst activates. Use reth (CLIENT=reth) instead.
+#             See: https://docs.giwa.io/notices/giwa-chain/op-geth-sunset
 FROM golang:1.24.0-bookworm AS builder
 
 ARG OPGETH_VERSION

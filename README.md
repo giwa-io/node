@@ -54,10 +54,12 @@ This repository provides everything you need to run your own node on the GIWA ne
 
 ### Execution Client
 > Choose your preferred execution client by setting the `CLIENT` environment variable.
+>
+> ⚠️ **Deprecation:** `op-geth` will be removed after the Karst hardfork and cannot follow GIWA Sepolia once Karst activates (2026-07-06 06:00 UTC). Use `reth` (default); migrate any `geth` nodes before Karst. See the [op-geth sunset notice](https://docs.giwa.io/notices/giwa-chain/op-geth-sunset).
 
-| Variable | Description                                | Default |
-|----------|--------------------------------------------|---------|
-| `CLIENT` | Execution client (`reth` or `geth`)        | `reth`  |
+| Variable | Description                                       | Default |
+|----------|---------------------------------------------------|---------|
+| `CLIENT` | Execution client (`reth`, or `geth` — deprecated) | `reth`  |
 
 ### Sync Configuration
 
