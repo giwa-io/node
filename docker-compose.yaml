@@ -16,7 +16,7 @@ services:
       context: .
       dockerfile: ${CLIENT}/Dockerfile
       args:
-        RETH_VERSION: v1.11.0
+        RETH_VERSION: v2.3.3
         OPGETH_VERSION: v1.101609.1
     env_file:
       - ${NETWORK_ENV:-.env.sepolia}
@@ -40,7 +40,7 @@ services:
       context: .
       dockerfile: ./node/Dockerfile
       args:
-        OPNODE_VERSION: v1.16.7
+        OPNODE_VERSION: v1.19.1
     env_file:
       - ${NETWORK_ENV:-.env.sepolia}
     environment:
