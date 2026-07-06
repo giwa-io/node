@@ -14,10 +14,9 @@ services:
         condition: service_completed_successfully
     build:
       context: .
-      dockerfile: ${CLIENT}/Dockerfile
+      dockerfile: ./reth/Dockerfile
       args:
         RETH_VERSION: v2.3.3
-        OPGETH_VERSION: v1.101609.1
     env_file:
       - ${NETWORK_ENV:-.env.sepolia}
     ports:
@@ -44,7 +43,7 @@ services:
     env_file:
       - ${NETWORK_ENV:-.env.sepolia}
     environment:
-      OP_NODE_L2_ENGINE_KIND: ${CLIENT}
+      OP_NODE_L2_ENGINE_KIND: reth
     ports:
       - "9545:9545"
       - "9222:9222"
