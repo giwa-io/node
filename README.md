@@ -28,8 +28,8 @@ This repository provides everything you need to run your own node on the GIWA ne
    ```
 4. Build and run
    ```bash
-   CLIENT=<reth|geth> docker compose build --parallel
-   CLIENT=<reth|geth> NETWORK_ENV=<.env.{network}> docker compose up -d
+   docker compose build --parallel
+   NETWORK_ENV=<.env.{network}> docker compose up -d
    ```
 
 5. Stop
@@ -53,13 +53,10 @@ This repository provides everything you need to run your own node on the GIWA ne
 | `OP_NODE_L1_BEACON`  | Your L1 beacon node endpoint       |
 
 ### Execution Client
-> Choose your preferred execution client by setting the `CLIENT` environment variable.
->
-> ⚠️ **Deprecation:** `op-geth` will be removed after the Karst hardfork and cannot follow GIWA Sepolia once Karst activates (2026-07-06 06:00 UTC). Use `reth` (default); migrate any `geth` nodes before Karst. See the [op-geth sunset notice](https://docs.giwa.io/notices/giwa-chain/op-geth-sunset).
+GIWA nodes run [op-reth](https://github.com/ethereum-optimism/optimism/tree/main/rust/op-reth) as the execution client.
 
-| Variable | Description                                       | Default |
-|----------|---------------------------------------------------|---------|
-| `CLIENT` | Execution client (`reth`, or `geth` — deprecated) | `reth`  |
+> [!NOTE]
+> op-geth is no longer supported. It cannot follow GIWA once the Karst hardfork is active. See the [op-geth sunset notice](https://docs.giwa.io/notices/giwa-chain/op-geth-sunset).
 
 ### Sync Configuration
 
@@ -82,22 +79,21 @@ Choose one of the following sync strategies depending on your preference.
 - **Trade‑offs:** Slower than snap; operationally simpler for controlled environments.
 
 ### Flashblocks (Optional)
-Flashblocks support is available when running **reth**.  
-To enable it:
+To enable Flashblocks:
 
 1. Edit your `.env.{network}` and uncomment:
    ```bash
    FLASHBLOCKS_WEBSOCKET_URL=
    ```
 
-2. Run your node with reth:
+2. Run your node:
    ```bash
-   CLIENT=reth NETWORK_ENV=<.env.{network}> docker compose up -d
+   NETWORK_ENV=<.env.{network}> docker compose up -d
    ```
 
 ## 💽 Persisting Data
 
-By default, execution data is mounted to `{PROJECT_ROOT}/${CLIENT}_data`.  
+By default, execution data is mounted to `{PROJECT_ROOT}/reth_data`.  
 To customize the mount path, set the `$DATA_DIR` environment variable.
 
 
