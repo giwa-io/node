@@ -3,7 +3,7 @@ services:
     container_name: giwa-jwt-generator
     image: alpine/openssl
     entrypoint: >
-      /bin/sh -c "[ ! -f /shared/jwtsecret.key ] && openssl rand -hex 32 | tr -d '\n' > /shared/jwtsecret.key || exit 0"
+      /bin/sh -c "[ ! -s /shared/jwtsecret.key ] && openssl rand -hex 32 | tr -d '\n' > /shared/jwtsecret.key || exit 0"
     volumes:
       - shared:/shared
     restart: "no"
