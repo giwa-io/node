@@ -13,6 +13,10 @@ RUN cd rust/op-reth && just update-superchain-registry-submodule && just maxperf
 # -------------------------------------------------------------------------
 FROM ubuntu:noble
 
+RUN apt-get update && \
+    apt-get install -y ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 COPY --from=builder /optimism/rust/target/maxperf/op-reth /usr/local/bin/
