@@ -1,2 +1,4 @@
 .idea
 *_data
+.env*
+!.env.sepolia
