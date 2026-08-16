@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euxo pipefail
+set -euo pipefail
 
 GENESIS_FILE="${GENESIS_FILE}"
 DATA_DIR="${RETH_DATADIR}"
@@ -11,11 +11,16 @@ P2P_PORT="${RETH_PORT}"
 DISCOVERY_PORT="${RETH_DISCOVERY_PORT}"
 ROLLUP_SEQUENCER_HTTP="${RETH_ROLLUP_SEQUENCERHTTP}"
 PRUNING_MODE="${RETH_GCMODE}"
-JWT_SECRET="${RETH_AUTHRPC_JWTSECRET}"
+JWT_SECRET="${RETH_AUTHRPC_JWTSECRET:-/shared/jwtsecret.key}"
 BOOTNODES="${RETH_BOOTNODES}"
 MAX_PEERS="${RETH_MAXPEERS:-100}"
 
 ADDITIONAL_ARGS=""
+
+if [[ ! -r "$JWT_SECRET" ]]; then
+    echo "JWT secret file is missing or unreadable: $JWT_SECRET" >&2
+    exit 1
+fi
 if [[ "$PRUNING_MODE" == "full" ]]; then
   ADDITIONAL_ARGS="--full"
 fi
@@ -30,15 +35,15 @@ fi
 exec op-reth node \
   --datadir="$DATA_DIR" \
   --ws \
-  --ws.origins="*" \
+  --ws.origins="${RETH_WS_ORIGINS:-http://localhost,http://127.0.0.1}" \
   --ws.addr=0.0.0.0 \
   --ws.port="$WS_PORT" \
-  --ws.api=web3,debug,eth,net,txpool \
+  --ws.api=web3,eth,net \
   --http \
-  --http.corsdomain="*" \
+  --http.corsdomain="${RETH_HTTP_CORS:-http://localhost,http://127.0.0.1}" \
   --http.addr=0.0.0.0 \
   --http.port="$RPC_PORT" \
-  --http.api=web3,debug,eth,net,txpool,miner \
+  --http.api=web3,eth,net \
   --authrpc.addr=0.0.0.0 \
   --authrpc.port="$AUTHRPC_PORT" \
   --authrpc.jwtsecret="$JWT_SECRET" \
