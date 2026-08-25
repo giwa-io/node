@@ -113,6 +113,31 @@ To customize the mount path, set the `$DATA_DIR` environment variable.
 For the fastest sync experience, you can restore from a snapshot instead of syncing from genesis.  
 👉 **[Snapshot Guide](https://docs.giwa.io/node-operators/snapshots)** — Follow the step-by-step instructions to download and restore a snapshot.
 
+## 🔗 Peers & Sync
+
+Bootnodes for both the execution client (Reth) and the consensus client (op-node) are **pre-configured** in `.env.sepolia` — you don't need to add trusted peers manually for a standard setup:
+
+- `RETH_BOOTNODES` — 3 execution-layer (P2P) bootnodes for Reth.
+- `OP_NODE_P2P_BOOTNODES` — 3 consensus-layer (ENR) bootnodes for op-node.
+
+### If your node is lagging behind the network
+
+1. **Check your peer count** in the logs:
+   ```bash
+   docker compose logs -f giwa-el | grep -i peers
+   docker compose logs -f giwa-cl | grep -i peers
+   ```
+   A healthy node should have several peers connected within a few minutes of startup. If peer count stays at 0, the issue is almost always network/firewall related, not the bootnode list itself.
+
+2. **Make sure the P2P ports are reachable**, not just `HTTP`/`WS` RPC ports:
+   - Reth (execution): `30303/tcp` and `30303/udp`
+   - op-node (consensus): `9222/tcp` and `9222/udp`
+
+   If you're running behind NAT, a cloud firewall, or a security group, these ports must be open for inbound/outbound traffic — otherwise your node can only reach a handful of peers (or none), which shows up as slow, lagging sync.
+
+3. **Behind NAT / private IP?** Set `OP_NODE_P2P_ADVERTISE_IP` in your `.env.{network}` file to your node's public IP so other peers can dial back to you. This line is present but commented out by default.
+
+4. **Snap sync still slow even with healthy peer count?** Consider restoring from the official [Snapshot Guide](https://docs.giwa.io/node-operators/snapshots) instead of syncing from genesis — this is the fastest path to a synced node.
 
 ## 🙋 Troubleshooting
 
