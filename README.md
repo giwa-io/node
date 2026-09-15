@@ -29,7 +29,7 @@ This repository provides everything you need to run your own node on the GIWA ne
 4. Build and run
    ```bash
    docker compose build --parallel
-   NETWORK_ENV=<.env.{network}> docker compose up -d
+   NETWORK_ENV=.env.sepolia docker compose up -d
    ```
 
 5. Stop
@@ -81,14 +81,15 @@ Choose one of the following sync strategies depending on your preference.
 ### Flashblocks (Optional)
 To enable Flashblocks:
 
-1. Edit your `.env.{network}` and uncomment:
+1. In `.env.sepolia`, uncomment the existing Flashblocks URL:
    ```bash
-   FLASHBLOCKS_WEBSOCKET_URL=
+   FLASHBLOCKS_WEBSOCKET_URL=wss://sepolia-flashblocks.giwa.io/ws
    ```
+   Leaving this value empty keeps Flashblocks disabled.
 
 2. Run your node:
    ```bash
-   NETWORK_ENV=<.env.{network}> docker compose up -d
+   NETWORK_ENV=.env.sepolia docker compose up -d
    ```
 
 ## 💽 Persisting Data
@@ -118,8 +119,8 @@ For the fastest sync experience, you can restore from a snapshot instead of sync
 
 - To check logs:
 ```bash
-docker compose logs -f giwa-el
-docker compose logs -f giwa-cl
+docker compose logs -f execution
+docker compose logs -f consensus
 ```
 
 
