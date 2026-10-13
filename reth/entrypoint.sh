@@ -14,6 +14,8 @@ PRUNING_MODE="${RETH_GCMODE}"
 JWT_SECRET="${RETH_AUTHRPC_JWTSECRET}"
 BOOTNODES="${RETH_BOOTNODES}"
 MAX_PEERS="${RETH_MAXPEERS:-100}"
+HTTP_API="${RETH_HTTP_API:-eth,net,web3}"
+WS_API="${RETH_WS_API:-eth,net,web3}"
 
 ADDITIONAL_ARGS=""
 if [[ "$PRUNING_MODE" == "full" ]]; then
@@ -33,12 +35,12 @@ exec op-reth node \
   --ws.origins="*" \
   --ws.addr=0.0.0.0 \
   --ws.port="$WS_PORT" \
-  --ws.api=web3,debug,eth,net,txpool \
+  --ws.api="$WS_API" \
   --http \
   --http.corsdomain="*" \
   --http.addr=0.0.0.0 \
   --http.port="$RPC_PORT" \
-  --http.api=web3,debug,eth,net,txpool,miner \
+  --http.api="$HTTP_API" \
   --authrpc.addr=0.0.0.0 \
   --authrpc.port="$AUTHRPC_PORT" \
   --authrpc.jwtsecret="$JWT_SECRET" \
