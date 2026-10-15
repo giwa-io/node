@@ -19,12 +19,18 @@ services:
         RETH_VERSION: v2.3.3
     env_file:
       - ${NETWORK_ENV:-.env.sepolia}
+    environment:
+      RETH_HTTP_PORT: ${RETH_HTTP_PORT:-8545}
+      RETH_WS_PORT: ${RETH_WS_PORT:-8546}
+      RETH_METRICS_PORT: ${RETH_METRICS_PORT:-6060}
+      RETH_PORT: ${RETH_PORT:-30303}
+      RETH_DISCOVERY_PORT: ${RETH_DISCOVERY_PORT:-30303}
     ports:
-      - "8545:8545"
-      - "8546:8546"
-      - "7301:6060"
-      - "30303:30303"
-      - "30303:30303/udp"
+      - "${RETH_HTTP_PORT:-8545}:${RETH_HTTP_PORT:-8545}"
+      - "${RETH_WS_PORT:-8546}:${RETH_WS_PORT:-8546}"
+      - "7301:${RETH_METRICS_PORT:-6060}"
+      - "${RETH_PORT:-30303}:${RETH_PORT:-30303}"
+      - "${RETH_DISCOVERY_PORT:-30303}:${RETH_DISCOVERY_PORT:-30303}/udp"
     volumes:
       - shared:/shared
       - ${DATA_DIR}:/app/data
@@ -44,11 +50,15 @@ services:
       - ${NETWORK_ENV:-.env.sepolia}
     environment:
       OP_NODE_L2_ENGINE_KIND: reth
+      OP_NODE_RPC_PORT: ${OP_NODE_RPC_PORT:-9545}
+      OP_NODE_P2P_LISTEN_TCP_PORT: ${OP_NODE_P2P_LISTEN_TCP_PORT:-9222}
+      OP_NODE_P2P_LISTEN_UDP_PORT: ${OP_NODE_P2P_LISTEN_UDP_PORT:-9222}
+      OP_NODE_METRICS_PORT: ${OP_NODE_METRICS_PORT:-7300}
     ports:
-      - "9545:9545"
-      - "9222:9222"
-      - "9222:9222/udp"
-      - "7300:7300"
+      - "${OP_NODE_RPC_PORT:-9545}:${OP_NODE_RPC_PORT:-9545}"
+      - "${OP_NODE_P2P_LISTEN_TCP_PORT:-9222}:${OP_NODE_P2P_LISTEN_TCP_PORT:-9222}"
+      - "${OP_NODE_P2P_LISTEN_UDP_PORT:-9222}:${OP_NODE_P2P_LISTEN_UDP_PORT:-9222}/udp"
+      - "${OP_NODE_METRICS_PORT:-7300}:${OP_NODE_METRICS_PORT:-7300}"
     volumes:
       - shared:/shared
 
