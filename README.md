@@ -1,136 +1,116 @@
-![GIWA](resources/logo.png)
+![Base](logo.webp)
 
+# Base Node
 
-# GIWA Node
+Base is a secure, low-cost, developer-friendly Ethereum L2 built on Optimism's [OP Stack](https://docs.optimism.io/). This repository contains a Docker build for running a Base node with `base-reth-node` and `base-consensus`.
 
+[![Website base.org](https://img.shields.io/website-up-down-green-red/https/base.org.svg)](https://base.org)
+[![Docs](https://img.shields.io/badge/docs-up-green)](https://docs.base.org/)
+[![Discord](https://img.shields.io/discord/1067165013397213286?label=discord)](https://base.org/discord)
+[![Twitter Base](https://img.shields.io/twitter/follow/Base?style=social)](https://x.com/Base)
+[![Farcaster Base](https://img.shields.io/badge/Farcaster_Base-3d8fcc)](https://farcaster.xyz/base)
 
-**GIWA** is a Ethereum Layer 2 network built on Optimism's [OP Stack](https://stack.optimism.io/).  
-This repository provides everything you need to run your own node on the GIWA network.
+## Quick Start
 
-## 💡 Supported Networks
-
-| Network           | Status |
-|-------------------|--------|
-| Mainnet           | 🚧     |
-| Testnet (Sepolia) | ✅      |
-
-
-## 🚀 Quick Start
-
-1. Ensure you have an Ethereum L1 full node RPC available
-2. Choose your network
-    - For **mainnet**: *Coming soon – mainnet is currently under development.*
-    - For **Testnet (Sepolia)**: Use `.env.sepolia`
-3. Configure your L1 endpoints in the env file. You can also customize other runtime parameters (e.g. network, cache, logging, metrics) directly in the env file.
+1. Ensure you have an Ethereum L1 full node RPC and beacon endpoint available.
+2. Copy the configuration file for your network to a local, ignored file:
+   - For mainnet: `cp .env.mainnet .env.local.mainnet`
+   - For testnet: `cp .env.sepolia .env.local.sepolia`
+3. Configure your L1 endpoints and `BASE_NODE_L2_ENGINE_AUTH_RAW` in the copied `.env` file:
    ```bash
-   OP_NODE_L1_ETH_RPC=<your-preferred-l1-eth-rpc>
-   OP_NODE_L1_BEACON=<your-preferred-l1-beacon>
+   BASE_NODE_L1_ETH_RPC=<your-preferred-l1-rpc>
+   BASE_NODE_L1_BEACON=<your-preferred-l1-beacon>
    ```
-4. Build and run
+4. Start the node:
+
    ```bash
-   docker compose build --parallel
-   NETWORK_ENV=<.env.{network}> docker compose up -d
-   ```
+   # For mainnet (default):
+   NETWORK_ENV=.env.local.mainnet docker compose up --build
 
-5. Stop
-    ```bash
-    docker compose down
-    ```
-
-6. Cleanup
-    ```bash
-    docker compose down -v && rm -rf ./${DATA_DIR}
-    ```
-
-
-## 🛠️ Configuration
-
-### Required Configuration
-
-| Variable             | Description                        |
-|----------------------|------------------------------------|
-| `OP_NODE_L1_ETH_RPC` | Your Ethereum L1 node RPC endpoint |
-| `OP_NODE_L1_BEACON`  | Your L1 beacon node endpoint       |
-
-### Execution Client
-GIWA nodes run [op-reth](https://github.com/ethereum-optimism/optimism/tree/main/rust/op-reth) as the execution client.
-
-> [!NOTE]
-> op-geth is no longer supported. It cannot follow GIWA once the Karst hardfork is active. See the [op-geth sunset notice](https://docs.giwa.io/notices/giwa-chain/op-geth-sunset).
-
-### Sync Configuration
-
-Choose one of the following sync strategies depending on your preference.
-> Enable the corresponding **OPTION** block in your `.env.{network}` (only one at a time).
-
-#### 1) Snap Sync — Fast & Practical
-- **What it does:** Downloads a recent state snapshot and syncs to the current head without executing every historical block.
-- **Use when:** You want to bring up a production/full node quickly (RPC nodes, followers).
-- **Trade‑offs:** Fastest to get online; not suitable for deep historical state queries.
-
-#### 2) Archive Sync — Full History
-- **What it does:** Executes every block from genesis and **retains all historical state** (archive).
-- **Use when:** You run an indexer, do research/debugging, or need historical state at arbitrary blocks.
-- **Trade‑offs:** Significantly slower and requires much more disk; most operators don’t need this for day‑to‑day operations.
-
-#### 3) Consensus‑Driven Sync — Trust‑Minimized
-- **What it does:** The consensus client **drives** the execution client by inserting unsafe blocks; no L2 peer discovery required for the execution client.
-- **Use when:** You prefer replay‑based syncing and tighter control (e.g. L2 verifier).
-- **Trade‑offs:** Slower than snap; operationally simpler for controlled environments.
-
-### Flashblocks (Optional)
-To enable Flashblocks:
-
-1. Edit your `.env.{network}` and uncomment:
-   ```bash
-   FLASHBLOCKS_WEBSOCKET_URL=
+   # For testnet:
+   NETWORK_ENV=.env.local.sepolia docker compose up --build
    ```
 
-2. Run your node:
-   ```bash
-   NETWORK_ENV=<.env.{network}> docker compose up -d
-   ```
+## Supported Clients
 
-## 💽 Persisting Data
+- Execution: `base-reth-node`
+- Consensus: `base-consensus`
 
-By default, execution data is mounted to `{PROJECT_ROOT}/reth_data`.  
-To customize the mount path, set the `$DATA_DIR` environment variable.
+## Requirements
 
+### Minimum Requirements
 
-## ⚙️ Hardware Requirements
+- Modern multicore CPU
+- 32GB RAM (64GB recommended)
+- NVMe SSD drive
+- Storage: (2 * [current chain size](https://base.org/stats) + [snapshot size](https://basechaindata.vercel.app) + 20% buffer) to accommodate future growth
+- Docker and Docker Compose
 
-### Testnet
+### Production Hardware Specifications
 
-| Resource | Minimum       | Recommended |
-|----------|---------------|-------------|
-| CPU      | 4 cores       | 8+ cores    |
-| RAM      | 8 GB          | 16+ GB      |
-| Disk     | 500 GB (NVMe) | 1+ TB       |
+The following are the hardware specifications we use in production:
 
+#### Reth Archive Node (recommended)
 
-## 🚀 Snapshot
+- **Instance**: AWS i7i.12xlarge
+- **Storage**: RAID 0 of all local NVMe drives (`/dev/nvme*`)
+- **Filesystem**: ext4
 
-For the fastest sync experience, you can restore from a snapshot instead of syncing from genesis.  
-👉 **[Snapshot Guide](https://docs.giwa.io/node-operators/snapshots)** — Follow the step-by-step instructions to download and restore a snapshot.
+## Configuration
 
+### Required Settings
 
-## 🙋 Troubleshooting
+- `BASE_NODE_L1_ETH_RPC`: your Ethereum L1 node RPC endpoint
+- `BASE_NODE_L1_BEACON`: your L1 beacon node endpoint
+- `BASE_NODE_NETWORK`: `base` or `base-sepolia`
+- `RETH_CHAIN`: `base` or `base-sepolia`
 
-- To check logs:
+### Network Settings
+
+- Mainnet:
+  - `RETH_CHAIN=base`
+  - `BASE_NODE_NETWORK=base`
+  - Sequencer: `https://mainnet-sequencer.base.org`
+- Sepolia:
+  - `RETH_CHAIN=base-sepolia`
+  - `BASE_NODE_NETWORK=base-sepolia`
+  - Sequencer: `https://sepolia-sequencer.base.org`
+
+### Optional Features
+
+- Flashblocks: set `RETH_FB_WEBSOCKET_URL`. When set, the execution client runs in Flashblocks mode; otherwise it runs in vanilla mode.
+- Follow mode: set `BASE_NODE_SOURCE_L2_RPC`
+- Pruning: set `RETH_PRUNING_ARGS`
+
+For full configuration options, see `.env.mainnet` or `.env.sepolia`.
+
+### Testing Flashblocks RPC Methods
+
+When running in Flashblocks mode, you can query a pending block using the Flashblocks RPC:
+
 ```bash
-docker compose logs -f giwa-el
-docker compose logs -f giwa-cl
+curl -X POST \
+  --data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["pending", false],"id":1}' \
+  http://localhost:8545
 ```
 
+## Snapshots
 
-## 🛑 Disclaimer
+Snapshots are available to help you sync your node more quickly. See [docs.base.org](https://docs.base.org/chain/run-a-base-node#snapshots) for links and more details on how to restore from a snapshot.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
-By running this node, you are responsible for your infrastructure, security, and compliance.
+## Supported Networks
 
+| Network | Status |
+| ------- | ------ |
+| Mainnet | ✅ |
+| Testnet | ✅ |
 
-## 🌐 Join the GIWA Community
+## Troubleshooting
 
-- [📖 Documentation](https://docs.giwa.io)
-- [🆇 X](https://x.com/giwachain)
-- 💬 Discord: *Coming Soon*
+For support please join our [Discord](https://discord.gg/buildonbase) and post in `🛠｜node-operators`. You can alternatively open a new GitHub issue.
+
+## Disclaimer
+
+THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or security. Usage is subject to applicable laws and regulations.
+
+For more information, visit [docs.base.org](https://docs.base.org/).
