@@ -2,8 +2,19 @@ services:
   jwt-generator:
     container_name: giwa-jwt-generator
     image: alpine/openssl
-    entrypoint: >
-      /bin/sh -c "[ ! -s /shared/jwtsecret.key ] && openssl rand -hex 32 | tr -d '\n' > /shared/jwtsecret.key || exit 0"
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        set -e
+        # Write to a temp file and check it before promoting: a failed openssl
+        # or a failed write must not leave an absent or empty secret behind,
+        # and must not report success to service_completed_successfully.
+        if [ ! -s /shared/jwtsecret.key ]; then
+          openssl rand -hex 32 | tr -d '\n' > /shared/jwtsecret.key.tmp
+          [ -s /shared/jwtsecret.key.tmp ]
+          mv /shared/jwtsecret.key.tmp /shared/jwtsecret.key
+        fi
     volumes:
       - shared:/shared
     restart: "no"
