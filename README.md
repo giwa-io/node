@@ -53,7 +53,7 @@ This repository provides everything you need to run your own node on the GIWA ne
 | `OP_NODE_L1_BEACON`  | Your L1 beacon node endpoint       |
 
 ### Execution Client
-GIWA nodes run [op-reth](https://github.com/ethereum-optimism/optimism/tree/main/rust/op-reth) as the execution client.
+GIWA nodes run [op-reth](https://github.com/ethereum-optimism/optimism/tree/develop/rust/op-reth) as the execution client.
 
 > [!NOTE]
 > op-geth is no longer supported. It cannot follow GIWA once the Karst hardfork is active. See the [op-geth sunset notice](https://docs.giwa.io/notices/giwa-chain/op-geth-sunset).
