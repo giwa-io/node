@@ -5,7 +5,7 @@ WORKDIR /app
 RUN cargo install just
 RUN cp $(which just) .
 # --------------------------------------------------------
-FROM golang:1.26.4-bookworm AS builder
+FROM golang:1.26.10-bookworm AS builder
 
 ARG OPNODE_VERSION
 
