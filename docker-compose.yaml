@@ -16,7 +16,7 @@ services:
       context: .
       dockerfile: ./reth/Dockerfile
       args:
-        RETH_VERSION: v2.3.3
+        RETH_VERSION: v2.6.1
     env_file:
       - ${NETWORK_ENV:-.env.sepolia}
     ports:
