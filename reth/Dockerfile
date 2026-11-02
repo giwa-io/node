@@ -1,4 +1,4 @@
-FROM rust:1.94-bookworm AS builder
+FROM rust:1.95-bookworm AS builder
 
 RUN apt update && apt install -y libclang-dev pkg-config build-essential
 RUN cargo install just --root /usr/local
@@ -9,7 +9,10 @@ RUN git clone https://github.com/ethereum-optimism/optimism.git --branch op-reth
 
 WORKDIR /optimism
 
-RUN cd rust/op-reth && just update-superchain-registry-submodule && just maxperf
+# op-reth v2.6.1 dropped the `maxperf` just recipe. GIT_* / BUILD_PROFILE feed `op-reth --version`.
+RUN cd rust/op-reth && just update-superchain-registry-submodule && \
+    GIT_VERSION="$RETH_VERSION" GIT_COMMIT="$(git rev-parse HEAD)" GIT_DATE="$(git log -1 --format=%ct)" BUILD_PROFILE=maxperf \
+    cargo build --profile maxperf --features jemalloc,asm-keccak --bin op-reth
 # -------------------------------------------------------------------------
 FROM ubuntu:noble
 
