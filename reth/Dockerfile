@@ -1,4 +1,4 @@
-FROM rust:1.95-bookworm AS builder
+FROM rust:1.99-bookworm AS builder
 
 RUN apt update && apt install -y libclang-dev pkg-config build-essential
 RUN cargo install just --root /usr/local
