@@ -55,6 +55,11 @@ This repository provides everything you need to run your own node on the GIWA ne
 ### Execution Client
 GIWA nodes run [op-reth](https://github.com/ethereum-optimism/optimism/tree/main/rust/op-reth) as the execution client.
 
+Additional arguments supplied to the execution container are appended to `op-reth node`. For example, to see the available options:
+```bash
+NETWORK_ENV=.env.sepolia docker compose run --rm execution --help
+```
+
 > [!NOTE]
 > op-geth is no longer supported. It cannot follow GIWA once the Karst hardfork is active. See the [op-geth sunset notice](https://docs.giwa.io/notices/giwa-chain/op-geth-sunset).
 
