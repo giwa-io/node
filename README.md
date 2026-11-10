@@ -39,7 +39,7 @@ This repository provides everything you need to run your own node on the GIWA ne
 
 6. Cleanup
     ```bash
-    docker compose down -v && rm -rf ./${DATA_DIR}
+    docker compose down -v && rm -rf ./reth_data
     ```
 
 
