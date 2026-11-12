@@ -58,6 +58,29 @@ GIWA nodes run [op-reth](https://github.com/ethereum-optimism/optimism/tree/main
 > [!NOTE]
 > op-geth is no longer supported. It cannot follow GIWA once the Karst hardfork is active. See the [op-geth sunset notice](https://docs.giwa.io/notices/giwa-chain/op-geth-sunset).
 
+#### RPC API namespaces
+
+The execution client exposes the standard `eth`, `net`, and `web3` namespaces by default for both HTTP and WebSocket RPC.
+
+You can enable additional namespaces through your `.env.{network}` file:
+
+```bash
+RETH_HTTP_API=eth,net,web3,debug
+RETH_WS_API=eth,net,web3,txpool
+```
+
+If these variables are omitted, the defaults are:
+
+```bash
+RETH_HTTP_API=eth,net,web3
+RETH_WS_API=eth,net,web3
+```
+
+Reth also supports `all` and `none`. Additional namespaces such as `debug`, `txpool`, or `miner` should only be enabled when required because they expose extra node functionality.
+
+> [!IMPORTANT]
+> If you previously relied on `debug`, `txpool`, or `miner` being enabled by default, add the required namespaces explicitly to your `.env.{network}` file after upgrading.
+
 ### Sync Configuration
 
 Choose one of the following sync strategies depending on your preference.
