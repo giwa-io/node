@@ -94,7 +94,8 @@ To enable Flashblocks:
 ## 💽 Persisting Data
 
 By default, execution data is mounted to `{PROJECT_ROOT}/reth_data`.  
-To customize the mount path, set the `$DATA_DIR` environment variable.
+To customize the mount path, set the `$DATA_DIR` environment variable.  
+op-node's p2p identity and peer/discovery databases are kept in the `consensus` Docker volume.
 
 
 ## ⚙️ Hardware Requirements
