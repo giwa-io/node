@@ -13,7 +13,7 @@ ROLLUP_SEQUENCER_HTTP="${RETH_ROLLUP_SEQUENCERHTTP}"
 PRUNING_MODE="${RETH_GCMODE}"
 JWT_SECRET="${RETH_AUTHRPC_JWTSECRET}"
 BOOTNODES="${RETH_BOOTNODES}"
-MAX_PEERS="${RETH_MAXPEERS:-100}"
+MAX_OUTBOUND_PEERS="${RETH_MAX_OUTBOUND_PEERS:-${RETH_MAXPEERS:-100}}"
 
 ADDITIONAL_ARGS=""
 if [[ "$PRUNING_MODE" == "full" ]]; then
@@ -43,7 +43,7 @@ exec op-reth node \
   --authrpc.port="$AUTHRPC_PORT" \
   --authrpc.jwtsecret="$JWT_SECRET" \
   --metrics=0.0.0.0:"$METRICS_PORT" \
-  --max-outbound-peers="$MAX_PEERS" \
+  --max-outbound-peers="$MAX_OUTBOUND_PEERS" \
   --chain="$GENESIS_FILE" \
   --rollup.sequencer-http="$ROLLUP_SEQUENCER_HTTP" \
   --rollup.disable-tx-pool-gossip \
