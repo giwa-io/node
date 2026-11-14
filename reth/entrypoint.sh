@@ -50,4 +50,5 @@ exec op-reth node \
   --discovery.port="$DISCOVERY_PORT" \
   --port="$P2P_PORT" \
   --bootnodes="$BOOTNODES" \
-  $ADDITIONAL_ARGS
+  $ADDITIONAL_ARGS \
+  "$@"
