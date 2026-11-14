@@ -48,6 +48,7 @@ exec op-reth node \
   --rollup.sequencer-http="$ROLLUP_SEQUENCER_HTTP" \
   --rollup.disable-tx-pool-gossip \
   --discovery.port="$DISCOVERY_PORT" \
+  --discovery.v5.port="$DISCOVERY_PORT" \
   --port="$P2P_PORT" \
   --bootnodes="$BOOTNODES" \
   $ADDITIONAL_ARGS
