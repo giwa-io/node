@@ -97,6 +97,13 @@ By default, execution data is mounted to `{PROJECT_ROOT}/reth_data`.
 To customize the mount path, set the `$DATA_DIR` environment variable.
 
 
+## 🔌 Ports
+
+Published ports are configured in `.env` (`RETH_HTTP_PORT`, `RETH_WS_PORT`, `RETH_PORT`, `RETH_DISCOVERY_PORT`, `RETH_METRICS_PORT`, `OP_NODE_RPC_PORT`, `OP_NODE_P2P_LISTEN_TCP_PORT`, `OP_NODE_P2P_LISTEN_UDP_PORT`, `OP_NODE_METRICS_PORT`).  
+`docker-compose.yaml` uses the same values for the clients and for the host port mappings, so changing a port in `.env` keeps both in sync.  
+The reth metrics endpoint is always published on host port `7301`.
+
+
 ## ⚙️ Hardware Requirements
 
 ### Testnet
